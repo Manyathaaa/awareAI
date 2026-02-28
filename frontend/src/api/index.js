@@ -36,7 +36,7 @@ export const trainingAPI = {
 };
 
 export const aiAPI = {
-  analyze:         (userId) => client.post(`/ai/analyze/${userId}`),
+  analyze:         (userId) => client.get(`/ai/analyze/${userId}`),
   recommendations: (userId) => client.get(`/ai/recommendations/${userId}`),
   chat:            (message) => client.post('/ai/chat', { message }),
 };

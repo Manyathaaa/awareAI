@@ -14,7 +14,7 @@ export const register = async (req, res) => {
     const user = await User.create({ name, email, password, role, department });
     const token = signToken(user._id);
 
-    res.status(201).json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.status(201).json({ token, user: { _id: user._id, name: user.name, email: user.email, role: user.role, department: user.department } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -29,7 +29,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
 
     const token = signToken(user._id);
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.json({ token, user: { _id: user._id, name: user.name, email: user.email, role: user.role, department: user.department } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -38,7 +38,11 @@ export const login = async (req, res) => {
 // GET /api/auth/me
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('badges').populate('trainingsCompleted');
+    const user = await User.findById(req.user.id)
+      .select('-password')
+      .populate('badges')
+      .populate('trainingsCompleted');
+    if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
   } catch (err) {
     res.status(500).json({ message: err.message });

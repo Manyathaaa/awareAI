@@ -28,12 +28,14 @@ export const riskAPI = {
 };
 
 export const trainingAPI = {
-  getAll:   ()         => client.get('/training'),
-  getOne:   (id)       => client.get(`/training/${id}`),
-  create:   (data)     => client.post('/training', data),
-  update:   (id, data) => client.patch(`/training/${id}`, data),
-  remove:   (id)       => client.delete(`/training/${id}`),
-  submit:   (id, data) => client.post(`/training/${id}/submit`, data),
+  getAll:   ()              => client.get('/training'),
+  getMy:    ()              => client.get('/training/my'),
+  getOne:   (id)            => client.get(`/training/${id}`),
+  create:   (data)          => client.post('/training', data),
+  update:   (id, data)      => client.patch(`/training/${id}`, data),
+  remove:   (id)            => client.delete(`/training/${id}`),
+  submit:   (id, data)      => client.post(`/training/${id}/submit`, data),
+  assign:   (id, userIds)   => client.post(`/training/${id}/assign`, { userIds }),
 };
 
 export const aiAPI = {

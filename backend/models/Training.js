@@ -10,6 +10,7 @@ const trainingSchema = new mongoose.Schema(
       default: 'general',
     },
     contentUrl: { type: String, default: '' }, // link to video / article
+    content: { type: String, default: '' },   // rich markdown lesson text
     durationMinutes: { type: Number, default: 0 },
     passingScore: { type: Number, default: 70 }, // %
     questions: [

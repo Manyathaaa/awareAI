@@ -1,14 +1,20 @@
 import express from 'express';
-import { getRiskScores, getUserRiskScore, recalculateRisk } from '../controllers/riskController.js';
+import {
+  getRiskScores,
+  getUserRiskScore,
+  getRiskHistory,
+  recalculateRisk,
+} from '../controllers/riskController.js';
 import { protect } from '../middlewares/auth.js';
-import { restrictTo } from '../middlewares/roles.js';
 
 const router = express.Router();
 
 router.use(protect);
 
-router.get('/', getRiskScores);
-router.get('/:userId', getUserRiskScore);
-router.post('/calculate/:userId', restrictTo('admin', 'manager'), recalculateRisk);
+// All authenticated users — RBAC enforced in controller
+router.get('/',                     getRiskScores);
+router.get('/:userId/history',      getRiskHistory);
+router.get('/:userId',              getUserRiskScore);
+router.post('/calculate/:userId',   recalculateRisk);
 
 export default router;

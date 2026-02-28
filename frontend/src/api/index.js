@@ -23,6 +23,7 @@ export const phishingAPI = {
 export const riskAPI = {
   getAll:      ()     => client.get('/risk'),
   getUser:     (id)   => client.get(`/risk/${id}`),
+  getHistory:  (id)   => client.get(`/risk/${id}/history`),
   recalculate: (id)   => client.post(`/risk/calculate/${id}`),
 };
 

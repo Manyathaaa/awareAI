@@ -1,0 +1,29 @@
+{
+  "name": "awareai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manyathaaa/awareAI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Manyathaaa/awareAI/issues"
+  },
+  "homepage": "https://github.com/Manyathaaa/awareAI#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongoose": "^9.2.3",
+    "nodemon": "^3.1.14"
+  }
+}

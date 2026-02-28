@@ -1,10 +1,23 @@
-/node_modules
-/.vscode
+# Dependencies
+node_modules/
+
+# Build output
 /dist
-/.env
-/.env.local
-/.env.development
-/.env.production
-/.env.test
-/.DS_Store
+frontend/dist
+
+# Environment variables — never commit these
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Editor
+.vscode/
+
+# OS
+.DS_Store
+
+# Logs
 *.log
+npm-debug.log*

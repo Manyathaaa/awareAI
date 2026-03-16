@@ -169,6 +169,8 @@ MONGO_URI=mongodb://localhost:27017/awareai
 JWT_SECRET=your_super_secret_key
 JWT_EXPIRES_IN=7d
 CLIENT_URL=http://localhost:5173
+# For multiple allowed origins:
+# CLIENT_URL=http://localhost:5173,https://awareai.company.com
 ```
 
 #### Frontend — the `frontend/.env` file:
@@ -227,10 +229,11 @@ All protected routes require an `Authorization: Bearer <token>` header.
 
 | Method | Endpoint | Access | Description |
 |---|---|---|---|
-| `POST` | `/api/auth/register` | Public | Register a new user |
+| `POST` | `/api/auth/register` | Public | Register a new user (always role: `employee`) |
 | `POST` | `/api/auth/login` | Public | Login and receive JWT |
 | `GET` | `/api/auth/me` | Protected | Get current user profile |
 | `PATCH` | `/api/auth/me` | Protected | Update name / department |
+| `POST` | `/api/auth/admin/users` | Admin | Create a user with manager/admin/employee role |
 
 ### Campaigns — `/api/campaigns`
 

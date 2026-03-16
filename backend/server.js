@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import mongoose from 'mongoose';
 
 import authRoutes from './routes/authRoutes.js';
@@ -12,10 +13,25 @@ import aiRoutes from './routes/aiRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const allowedOrigins = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Origin not allowed by CORS'));
+  },
+  credentials: true,
+};
 
 // ── Middleware ──────────────────────────────────────────────────
-app.use(cors({ origin: process.env.CLIENT_URL || '*' }));
-app.use(express.json());
+app.disable('x-powered-by');
+app.use(helmet());
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10kb' }));
 
 // ── Routes ──────────────────────────────────────────────────────
 app.get('/', (req, res) => res.json({ message: 'AwareAI API is running 🚀' }));
@@ -47,4 +63,3 @@ mongoose
     console.error('❌ MongoDB connection failed:', err.message);
     process.exit(1);
   });
-

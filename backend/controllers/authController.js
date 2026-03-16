@@ -3,26 +3,18 @@ import User from '../models/User.js';
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
-const sanitizeUser = (user) => ({
-  _id: user._id,
-  name: user.name,
-  email: user.email,
-  role: user.role,
-  department: user.department,
-});
 
 // POST /api/auth/register
 export const register = async (req, res) => {
   try {
-    const { name, email, password, department } = req.body;
+    const { name, email, password, role, department } = req.body;
     const existing = await User.findOne({ email });
     if (existing) return res.status(409).json({ message: 'Email already in use' });
 
-    // Public registrations are always employee users.
-    const user = await User.create({ name, email, password, role: 'employee', department });
+    const user = await User.create({ name, email, password, role, department });
     const token = signToken(user._id);
 
-    res.status(201).json({ token, user: sanitizeUser(user) });
+    res.status(201).json({ token, user: { _id: user._id, name: user.name, email: user.email, role: user.role, department: user.department } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -37,21 +29,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
 
     const token = signToken(user._id);
-    res.json({ token, user: sanitizeUser(user) });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// POST /api/auth/admin/users
-export const createUserByAdmin = async (req, res) => {
-  try {
-    const { name, email, password, role = 'employee', department = '' } = req.body;
-    const existing = await User.findOne({ email });
-    if (existing) return res.status(409).json({ message: 'Email already in use' });
-
-    const user = await User.create({ name, email, password, role, department });
-    res.status(201).json({ user: sanitizeUser(user) });
+    res.json({ token, user: { _id: user._id, name: user.name, email: user.email, role: user.role, department: user.department } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

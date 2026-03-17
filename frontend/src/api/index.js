@@ -13,6 +13,7 @@ export const campaignAPI = {
   create:  (data)     => client.post('/campaigns', data),
   update:  (id, data) => client.patch(`/campaigns/${id}`, data),
   remove:  (id)       => client.delete(`/campaigns/${id}`),
+  send:    (id)       => client.post(`/campaigns/${id}/send`),
 };
 
 export const phishingAPI = {

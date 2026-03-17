@@ -46,6 +46,18 @@ const Campaigns = () => {
     }
   };
 
+
+  const send = async (id) => {
+    if (!confirm('Send this campaign to all assigned users?')) return;
+    try {
+      await campaignAPI.send(id);
+      alert('Campaign sent!');
+      load();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to send campaign');
+    }
+  };
+
   const remove = async (id) => {
     if (!confirm('Delete this campaign?')) return;
     await campaignAPI.remove(id);
@@ -91,12 +103,21 @@ const Campaigns = () => {
                   <span>🚨 Reported: <strong>{c.stats?.reported ?? 0}</strong></span>
                 </div>
               </div>
-              <button
-                onClick={() => remove(c._id)}
-                className="text-xs text-red-400 hover:text-red-600 transition-colors shrink-0"
-              >
-                Delete
-              </button>
+              <div className="flex flex-col gap-2 items-end">
+                <button
+                  onClick={() => send(c._id)}
+                  className="text-xs text-blue-500 hover:text-blue-700 transition-colors shrink-0 border border-blue-200 rounded px-2 py-1"
+                  disabled={c.stats?.sent > 0}
+                >
+                  {c.stats?.sent > 0 ? 'Sent' : 'Send'}
+                </button>
+                <button
+                  onClick={() => remove(c._id)}
+                  className="text-xs text-red-400 hover:text-red-600 transition-colors shrink-0"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
